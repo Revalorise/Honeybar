@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Staff{% endblock %}
+
+{% block content %}
+<div class="container pt-4">
+
+    <table class="table table-dark table-hover">
+  <tr>
+    <th>Staff</th>
+    <th>Role</th>
+    <th>Credit(s)</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="{{ uuid_list.Revalorise.avatar }}" width="32px" height="32px">
+      <a href="" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+        {{ uuid_list.Revalorise.username }}
+      </a>
+    </td>
+    <td><span class="badge text-bg-danger">Owner</span></td>
+    <td><span class="badge text-bg-warning">Website Architect</span></td>
+  </tr>
+  <tr>
+    <td>
+      <img src="{{ uuid_list.Vcera.avatar }}" width="32px" height="32px">
+      <a href="" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+        {{ uuid_list.Vcera.username }}
+      </a>
+    </td>
+    <td><span class="badge text-bg-danger">Owner</span></td>
+    <td><span class="badge text-bg-warning">Server Architect</span></td>
+  </tr>
+  <tr>
+    <td>
+      <img src="{{ uuid_list.Dummy.avatar }}" width="32px" height="32px">
+      <a href="" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+        {{ uuid_list.Dummy.username }}
+      </a>
+    </td>
+    <td><span class="badge text-bg-secondary">Senior Staff</span></td>
+    <td><span class="badge text-bg-warning">Server Security</span>
+</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="{{ uuid_list.Dummy.avatar }}" width="32px" height="32px">
+      <a href="" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+        {{ uuid_list.Dummy.username }}
+      </a>
+    </td>
+    <td><span class="badge text-bg-secondary">Junior Staff</span></td>
+    <td><span class="badge text-bg-warning">Server Security</span>
+</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="{{ uuid_list.Dummy.avatar }}" width="32px" height="32px">
+      <a href="" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+        {{ uuid_list.Dummy.username }}
+      </a>
+    </td>
+    <td><span class="badge text-bg-light">Builder</span></td>
+    <td><span class="badge text-bg-warning">Map Builder</span>
+</td>
+  </tr>
+</table>
+</div>
+
+<div class="container col-xl-10 col-xxl-8 px-4 py-1">
+    <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Subscribe to the Honeybar's newsletter!</h1>
+        <p class="col-lg-10 fs-4">Be the first to hear about upcoming updates and development progress from our staff.</p>
+
+      </div>
+      <div class="col-md-10 mx-auto col-lg-5">
+        <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+          </div>
+          <button class="w-100 btn btn-lg btn-warning" type="submit">Subscribe</button>
+          <hr class="my-4">
+          <small class="text-body-secondary">
+            By clicking Sign up, you will receive an email from our server when there is an upcoming updates to the server
+          </small>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
