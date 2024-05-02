@@ -151,31 +151,31 @@
           </a>
           <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
             <li>
-              <a href="/app/static" class="nav-link text-white home">
+              <a href="{{ url_for('home') }}" class="nav-link text-white home">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
                 Home
               </a>
             </li>
             <li>
-              <a href="/staff" class="nav-link text-white leaderboard">
+              <a href="{{ url_for('staff') }}" class="nav-link text-white leaderboard">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#staff"/></svg>
                 Staff
               </a>
             </li>
             <li>
-              <a href="/form" class="nav-link text-white">
+              <a href="{{ url_for('form') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#table"/></svg>
                 Form
               </a>
             </li>
             <li>
-              <a href="/store" class="nav-link text-white">
+              <a href="{{ url_for('store') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#shopping-cart"/></svg>
                 Store
               </a>
             </li>
             <li>
-              <a href="/profile" class="nav-link text-white">
+              <a href="{{ url_for('profile') }}" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
                 Account
               </a>
