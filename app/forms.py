@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Optional
 import sqlalchemy as sa
 from app import db
 from app.models import Users
@@ -14,6 +14,7 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
+    minecraft_username = StringField('Minecraft Username (Optional)', validators=[Optional()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat Password', validators=[DataRequired(),

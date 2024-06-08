@@ -1,34 +1,10 @@
 import sqlalchemy as sa
 from flask import render_template,  redirect, url_for, flash
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.forms import LoginForm, RegisterForm
-from app.models import Users
-from mojang import API
-
-
-api = API()
-
-uuid_revalorise = api.get_uuid('_Revalorise')
-uuid_vcera = api.get_uuid('Vcera')
-
-uuid_list = {
-    'Revalorise': {
-        'uuid': uuid_revalorise,
-        'avatar': f'https://mc-heads.net/avatar/{uuid_revalorise}',
-        'username': api.get_username(uuid_revalorise)
-    },
-    'Vcera': {
-        'uuid':  uuid_vcera,
-        'avatar': f'https://mc-heads.net/avatar/{uuid_vcera}',
-        'username': api.get_username(uuid_vcera),
-    },
-    'Dummy': {
-        'uuid': '069a79f444e94726a5befca90e38aaf5',
-        'avatar': 'https://mc-heads.net/avatar/069a79f444e94726a5befca90e38aaf5',
-        'username': 'Dummy Staff'
-    }
-}
+from app.models import Users, Player
+from app.uuid_list import minecraft_details
 
 
 @app.route('/home')
@@ -39,7 +15,7 @@ def home():
 @app.route('/staff')
 def staff():
     return render_template('staff.html',
-                           uuid_list=uuid_list)
+                           uuid_list=minecraft_details)
 
 
 @app.route('/form')
@@ -55,14 +31,17 @@ def store():
 @app.route('/profile')
 def profile():
     rank = None
+    mc_user = None
     if current_user.is_authenticated:
         rank = db.session.scalar(
             sa.select(Users.rank).where(Users.id == current_user.id))
+        mc_user = db.session.scalar(
+            sa.select(Users.minecraft_user).where(Users.id == current_user.id))
     else:
         redirect(url_for('profile'))
     return render_template('profile.html',
-                           uuid_list=uuid_list,
-                           rank=rank)
+                           uuid_list=minecraft_details,
+                           rank=rank, mc_user=mc_user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -96,9 +75,11 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        user = Users(email=form.email.data)
+        user = Users(email=form.email.data,)
         user.set_password(form.password.data)
+        player = Player(minecraft_username=form.minecraft_username.data)
         db.session.add(user)
+        db.session.add(player)
         db.session.commit()
         flash('Successfully registered!')
         login_user(user)

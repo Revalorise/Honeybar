@@ -15,9 +15,6 @@ class Users(db.Model, UserMixin):
     email: so.Mapped[str] = so.mapped_column(sa.String(140), index=True,
                                              unique=True)
 
-    rank: so.Mapped[str] = so.mapped_column(sa.String(20), index=True,
-                                            default='Player', nullable=True)
-
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(
         sa.String(256))
 
@@ -55,6 +52,16 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"<Post {self.body}>"
+
+
+class Player(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    username: so.Mapped[str] = so.mapped_column(sa.String(20), index=True, unique=True)
+    rank: so.Mapped[str] = so.mapped_column(sa.String(20), index=True, default='Player', nullable=True)
+    uuid: so.Mapped[str] = so.mapped_column(sa.String(36), index=True, unique=True)
+
+    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("users.id"))
+    users: so.Mapped[Users] = so.relationship()
 
 
 admin.add_view(ModelView(Users, db.session))
