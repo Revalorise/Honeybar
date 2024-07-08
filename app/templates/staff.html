@@ -11,26 +11,18 @@
     <th>Role</th>
     <th>Credit(s)</th>
   </tr>
+  {% for staff in staffs %}
   <tr>
     <td>
-      <img src="{{ uuid_list._Revalorise.avatar }}" width="32px" height="32px">
+      <img src="{{ staff.minecraft_avatar }}" class="rounded" width="32px" height="32px">
       <a href="" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
-        {{ minecraft_details.Revalorise.username }}
+        {{ staff.minecraft_username }}
       </a>
     </td>
-    <td><span class="badge text-bg-danger">Owner</span></td>
+    <td><span class="badge text-bg-danger">{{ staff.rank }}</span></td>
     <td><span class="badge text-bg-warning">Website Architect</span></td>
   </tr>
-  <tr>
-    <td>
-      <img src="{{ uuid_list.Vcera.avatar }}" width="32px" height="32px">
-      <a href="" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
-        {{ minecraft_details.Vcera.username }}
-      </a>
-    </td>
-    <td><span class="badge text-bg-danger">Owner</span></td>
-    <td><span class="badge text-bg-warning">Server Architect</span></td>
-  </tr>
+  {% endfor %}
 </table>
 </div>
 

@@ -23,16 +23,16 @@
 
   {% if current_user.is_authenticated %}
     <div class="d-inline-flex align-items-center p-3 my-3 text-white bg-dark rounded shadow-sm">
-      <img src="{{ uuid_list._Revalorise.avatar }}" class="rounded" width="32px" height="32px">
+      <img src="{{ avatar }}" class="rounded" width="32px" height="32px">
 
       <div class="lh-1 px-2">
-        {% if rank == "Owner" %}
+        {% if hb_rank == "Owner" %}
         <h1 class="h6 mb-0 text-white lh-1 badge bg-danger text-wrap">
-          {{ minecraft_details.Revalorise.username }}
+          {{ mc_username }}
         </h1>
         {% else %}
         <h1 class="h6 mb-0 text-white lh-1 badge bg-info text-wrap">
-          {{ minecraft_details.Revalorise.username }}
+          {{ mc_username }}
         </h1>
         {% endif %}
 
@@ -41,7 +41,7 @@
     </div>
 
   {% else %}
-    <div class="d-inline-flex align-items-center p-3 my-3 text-white bg-dark rounded shadow-sm">
+    <div class="d-inline-flex align-items-center p-3 my-3 text-white bg-dark shadow-sm">
         <div class="lh-1 px-2">
           <h1 class="h6 mb-0 lh-1">
             Welcome guest! Please
@@ -56,9 +56,9 @@
   <div class="my-3 p-3 bg-body rounded shadow">
     <h6 class="border-bottom pb-2 mb-0">Recent updates</h6>
     <div class="d-flex text-body-secondary pt-3">
-      <img src="{{ uuid_list._Revalorise.avatar }}" class="rounded" width="32" height="32" role="img">
+      <img src="{{ avatar }}" class="rounded" width="32" height="32" role="img">
       <p class="pb-3 px-2 mb-0 small lh-sm border-bottom">
-        <strong class="d-block text-gray-dark">@{{ uuid_list._Revalorise.username }}
+        <strong class="d-block text-gray-dark">@{{ mc_username }}
           <b class="text-warning bg-dark rounded d-inline-flex p-1">Topic: Introducing Main Lobby!</b>
         </strong>
         Some representative placeholder content, with some information about this user. Imagine this being some sort of status update, perhaps?
@@ -72,10 +72,10 @@
   <div class="my-3 p-3 bg-body rounded shadow">
     <h6 class="border-bottom pb-2 mb-0">Suggestions</h6>
     <div class="d-flex text-body-secondary pt-3">
-        <img src="{{ uuid_list.Vcera.avatar }}" class="rounded" width="32" height="32" role="img">
+        <img src="{{ avatar }}" class="rounded" width="32" height="32" role="img">
       <div class="pb-3 px-2 mb-0 small lh-sm border-bottom w-100">
         <div class="d-flex justify-content-between">
-          <strong class="text-gray-dark">@{{ uuid_list.Vcera.username }}</strong>
+          <strong class="text-gray-dark">@{{ mc_username }}</strong>
           <a href="#">Follow</a>
         </div>
         <span class="badge bg-danger">Owner</span>
@@ -89,7 +89,7 @@
 
   <hr>
 
-  <div class="d-inline-flex align-items-center p-3 mt-3 text-white bg-dark rounded shadow-sm">
+  <div class="d-inline-flex align-items-center p-3 mt-3 text-white bg-dark shadow-sm">
         <div class="lh-1 px-2">
           <h1 class="h6 mb-0 lh-1">
             Write a post

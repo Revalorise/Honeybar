@@ -1,10 +1,12 @@
 import sqlalchemy as sa
 from flask import render_template,  redirect, url_for, flash
 from flask_login import current_user, login_user, logout_user, login_required
+from datetime import datetime
+
 from app import app, db
-from app.forms import LoginForm, RegisterForm
-from app.models import Users, Player
-from app.uuid_list import minecraft_details
+from app.forms import LoginForm, RegisterForm, PostForm
+from app.models import User, Post
+from app.utils.load_minecraft_details import get_minecraft_avatar
 
 
 @app.route('/home')
@@ -14,13 +16,63 @@ def home():
 
 @app.route('/staff')
 def staff():
+    staffs = db.session.scalars(
+        sa.select(User).where(User.rank == 'Owner')).all()
+
     return render_template('staff.html',
-                           uuid_list=minecraft_details)
+                           staffs=staffs)
 
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
+@app.route('/form/<int:page>')
+def form(page=1):
+    PER_PAGE = 5
+    posts = [
+        {'title': 'Hello!',
+         'created_at': datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+         'author': '_Revalorise',
+         'body': "Allow me to introduce myself!"
+         },
+        {'title': 'Hello!',
+         'created_at': datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+         'author': 'Vcera',
+         'body': "Allow me to introduce myself!"
+         },
+        {'title': 'Hello!',
+         'created_at': datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+         'author': 'Vcera',
+         'body': "Allow me to introduce myself!"
+         },
+        {'title': 'Hello!',
+         'created_at': datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+         'author': 'Vcera',
+         'body': "Allow me to introduce myself!"
+         },
+        {'title': 'Hello!',
+         'created_at': datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+         'author': 'Vcera',
+         'body': "Allow me to introduce myself!"
+         },
+        {'title': 'Hello!',
+         'created_at': datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+         'author': 'Vcera',
+         'body': "Allow me to introduce myself!"
+         },
+    ]
+
+    return render_template('form.html', posts=posts)
+
+
+@app.route('/post', methods=['GET', 'POST'])
+def post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.post.data, body=form.post.data)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('form', page=1))
+
+    return render_template('form.html', form=form)
 
 
 @app.route('/store')
@@ -30,18 +82,31 @@ def store():
 
 @app.route('/profile')
 def profile():
-    rank = None
-    mc_user = None
+    """
+    Display s the user's profile information, including their Minecraft username, rank, and UUID.
+    """
+    hb_rank = None
+    mc_username = None
+    uuid = None
+    avatar = None
+
     if current_user.is_authenticated:
-        rank = db.session.scalar(
-            sa.select(Users.rank).where(Users.id == current_user.id))
-        mc_user = db.session.scalar(
-            sa.select(Users.minecraft_user).where(Users.id == current_user.id))
+        hb_rank = db.session.scalar(
+            sa.select(User.rank).where(User.id == current_user.id))
+        mc_username = db.session.scalar(
+            sa.select(User.minecraft_username).where(User.id == current_user.id))
+        uuid = db.session.scalar(
+            sa.select(User.minecraft_uuid).where(User.id == current_user.id))
+        avatar = get_minecraft_avatar(uuid)
+
     else:
         redirect(url_for('profile'))
+
     return render_template('profile.html',
-                           uuid_list=minecraft_details,
-                           rank=rank, mc_user=mc_user)
+                           uuid=uuid,
+                           hb_rank=hb_rank,
+                           mc_username=mc_username,
+                           avatar=avatar)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -51,7 +116,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.scalar(
-            sa.select(Users).where(Users.email == form.email.data))
+            sa.select(User).where(User.email == form.email.data))
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -75,11 +140,15 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        user = Users(email=form.email.data,)
+        user = User(
+            minecraft_username=form.minecraft_username.data,
+            email=form.email.data
+        )
         user.set_password(form.password.data)
-        player = Player(minecraft_username=form.minecraft_username.data)
+        user.set_uuid(form.minecraft_username.data)
+        uuid = user.get_uuid()
+        user.set_avatar(get_minecraft_avatar(uuid))
         db.session.add(user)
-        db.session.add(player)
         db.session.commit()
         flash('Successfully registered!')
         login_user(user)
