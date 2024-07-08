@@ -23,9 +23,8 @@ def staff():
                            staffs=staffs)
 
 
-@app.route('/form/<int:page>')
-def form(page=1):
-    PER_PAGE = 5
+@app.route('/form')
+def form():
     posts = [
         {'title': 'Hello!',
          'created_at': datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
